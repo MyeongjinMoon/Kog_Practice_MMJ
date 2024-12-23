@@ -25,7 +25,9 @@ namespace Myeongjin
 		private RenderTexture lerpBuffer;
 		private RenderTexture nextTexture;
 
-		public void InitMap(float[,] heightMap)
+        public Texture FogTexture => curTexture;
+
+        public void InitMap(float[,] heightMap)
 		{
 			map.Clear();
 			mapWidth = heightMap.GetLength(0);

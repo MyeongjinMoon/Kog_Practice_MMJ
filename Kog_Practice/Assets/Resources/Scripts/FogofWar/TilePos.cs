@@ -10,7 +10,7 @@ namespace Myeongjin
 		public int y;
 		public float height;
 
-		public TilePos(int x, int y, int height)
+		public TilePos(int x, int y, float height)
 		{
 			this.x = x;
 			this.y = y;
