@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Myeongjin
 {
-	public class FowManager : MonoBehaviour
+    [DefaultExecutionOrder(-100)]
+    public class FowManager : MonoBehaviour
 	{
 		private static FowManager f_instance;
 		private const string FOWMANAGERNAME = "_FowManager";
@@ -14,13 +16,22 @@ namespace Myeongjin
 			get
 			{
 				if (f_instance == null)
-				{
-					GameObject newUIManagerObject = new GameObject(FOWMANAGERNAME);
-					f_instance = newUIManagerObject.AddComponent<FowManager>();
-				}
-				return f_instance;
+					CheckExsistance();
+
+                return f_instance;
 			}
 		}
+		private static void CheckExsistance()
+		{
+            f_instance = FindObjectOfType<FowManager>();
+
+			if (f_instance == null)
+			{
+				GameObject container = new GameObject("FowManager Singleton Container");
+
+				f_instance = container.AddComponent<FowManager>();
+			}
+        }
 
 		private Material _fogMaterial;
 		public GameObject _rendererPrefab;
@@ -29,8 +40,9 @@ namespace Myeongjin
 		{
 			var renderer = Instantiate(_rendererPrefab, transform);
 			renderer.transform.localPosition = Vector3.zero;
-			//renderer.transform.localScale = new Vector3(_fog);
-		}
+            renderer.transform.localScale = new Vector3(_fogWidthX * 0.5f, 1, _fogWidthZ * 0.5f);
+            _fogMaterial = renderer.GetComponentInChildren<Renderer>().material;
+        }
         void UpdateFogTexture()
         {
             if (Map.FogTexture != null)
@@ -39,13 +51,14 @@ namespace Myeongjin
             }
         }
 
-        public LayerMask _groundLayer;  //
-		public float _fogWidthX = 40;
-		public float _fogWidthZ = 40;
+        public LayerMask _groundLayer;
+		public float _fogWidthX = 40;	// fogX 크기
+		public float _fogWidthZ = 40;	// fogY 크기
 		public float _tileSize = 1;
 		public float _updateCycle = 0.5f;
 
-		public class FogAlpha
+        [System.Serializable]
+        public class FogAlpha
 		{
 			[Range(0, 1)] public float current = 0.0f;
 			[Range(0, 1)] public float visited = 0.8f;
@@ -83,14 +96,14 @@ namespace Myeongjin
         }
 		public static void AddUnit(FowUnit unit)
 		{
-			if(!f_instance.UnitList.Contains(unit))
+			if (!f_instance.UnitList.Contains(unit))
 			{
 				f_instance.UnitList.Add(unit);
 			}
 		}
 		public static void RemoveUnit(FowUnit viewer)
 		{
-			if(f_instance.UnitList.Contains(viewer))
+			if (f_instance.UnitList.Contains(viewer))
 			{
 				f_instance.UnitList.Remove(viewer);
 			}
@@ -109,7 +122,7 @@ namespace Myeongjin
 
 					float height = 0f;
 
-					if(Physics.Raycast(ro,rd,out var hit, 200f, _groundLayer))
+					if (Physics.Raycast(ro, rd, out var hit, 200f, _groundLayer))
 					{
 						height = hit.point.y;
 					}
@@ -147,11 +160,14 @@ namespace Myeongjin
 					foreach (var unit in UnitList)
 					{
 						TilePos pos = GetTilePos(unit);
+
+						// unit이 볼 수 있는 타일을 찾음
 						Map.ComputeFog(pos,
 							unit.sightRange / _tileSize,
 							unit.sightHeight
 							);
-					}
+                    }
+                    Map.ApplyFogAlpha();
                 }
                 yield return new WaitForSeconds(_updateCycle);
             }

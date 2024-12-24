@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Myeongjin
 {
-	public class FowTile : MonoBehaviour
+	public class FowTile
 	{
 		public TilePos pos;
 		public int index;
