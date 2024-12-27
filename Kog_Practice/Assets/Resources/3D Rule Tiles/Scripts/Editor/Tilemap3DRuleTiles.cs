@@ -55,7 +55,6 @@ public class Tilemap3DRuleTiles : EditorWindow
             RestoreTilesFromBackup();
         }
     }
-
     private void AddNewLevel()
     {
         GameObject grid_obj = GameObject.FindGameObjectWithTag("Grid");
@@ -77,9 +76,6 @@ public class Tilemap3DRuleTiles : EditorWindow
 
         ruleTileList.tilemapLevels.Add(new_level);
     }
-
-
-
     private void GenerateRuleTiles()
     {
         ToggleRuleTiles(null, true);
