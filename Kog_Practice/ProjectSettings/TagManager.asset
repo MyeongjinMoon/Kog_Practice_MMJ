@@ -9,6 +9,8 @@ TagManager:
   - Rule Tile
   - Tile Mesh
   - Combined Mesh
+  - TeamA
+  - TeamB
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - TeamA
+  - TeamB
   - 
   - 
   - 

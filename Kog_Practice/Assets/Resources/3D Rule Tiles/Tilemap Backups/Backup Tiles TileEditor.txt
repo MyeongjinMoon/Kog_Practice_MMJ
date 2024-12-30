@@ -1,1 +1,4 @@
-Grass Ground,(0.50, 1.00, -5.50)
+Grass Ground,(3.00, 0.00, -7.00)
+Grass Ground,(3.00, 0.00, -9.00)
+Grass Ground,(1.00, 0.00, -9.00)
+Grass Ground,(1.00, 0.00, -7.00)

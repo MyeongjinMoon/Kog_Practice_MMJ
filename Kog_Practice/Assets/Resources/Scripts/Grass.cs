@@ -22,20 +22,20 @@ public class Grass : MonoBehaviour
 		//TimeFlow();
         meshRenderer.material = baseColor;
     }
-    private void OnTriggerEnter(Collider other)
-	{
-		if(other.CompareTag("Player"))
-		{
-			meshRenderer.material = hitColor;
-		}
-	}
-	private void OnTriggerExit(Collider other)
-	{
-		if (other.CompareTag("Player"))
-		{
-			meshRenderer.material = baseColor;
-		}
-	}
+ //   private void OnTriggerEnter(Collider other)
+	//{
+	//	if(other.CompareTag("Player"))
+	//	{
+	//		meshRenderer.material = hitColor;
+	//	}
+	//}
+	//private void OnTriggerExit(Collider other)
+	//{
+	//	if (other.CompareTag("Player"))
+	//	{
+	//		meshRenderer.material = baseColor;
+	//	}
+	//}
 	public void ChangeMaterial()
 	{
 		meshRenderer.material = hitColor;
