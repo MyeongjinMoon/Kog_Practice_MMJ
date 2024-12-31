@@ -39,19 +39,5 @@ public class Grass : MonoBehaviour
 	public void ChangeMaterial()
 	{
 		meshRenderer.material = hitColor;
-
-		transParentTime += Time.deltaTime * 2;
-		if (transParentTime > 1.5f)
-			transParentTime = 1.5f;
     }
-	private void TimeFlow()
-	{
-		transParentTime -= Time.deltaTime;
-
-		if (transParentTime < 0)
-		{
-			transParentTime = 0;
-            meshRenderer.material = baseColor;
-        }
-	}
 }

@@ -16,18 +16,15 @@ namespace Myeongjin
         private List<Collider> colls;
 
         private RaycastHit hit;
-        private float sightRange;
         private int hitBush = 0;
 
         void Start()
 		{
 			colls = new List<Collider>();
-			sightRange = this.GetComponent<FowUnit>().sightRange;
 		}
 		void Update()
 		{
 			Move();
-			Sight();
 			SearchBush();
         }
 		private void Move()
@@ -55,49 +52,17 @@ namespace Myeongjin
 		}
 		private void OnTriggerEnter(Collider other)
 		{
-			if (other.CompareTag("TeamB"))
-			{
-				//other.GetComponent<MeshRenderer>().enabled = true;
-				colls.Add(other);
-            }
             if (other.gameObject.CompareTag("Bush"))
             {
-                hitBush++;
+               hitBush++;
             }
         }
 		private void OnTriggerExit(Collider other)
 		{
-			for (int i = 0; i < colls.Count; i++)
-			{
-				if (colls[i] == other)
-				{
-					colls[i].GetComponent<MeshRenderer>().enabled = false;
-
-					colls.RemoveAt(i);
-				}
-            }
             if (other.gameObject.CompareTag("Bush"))
             {
                 hitBush--;
             }
-        }
-		private void Sight()
-		{
-			foreach (var coll in colls)
-			{
-				//Debug.DrawRay(transform.position, coll.transform.position - transform.position, Color.red, (coll.transform.position - transform.position).magnitude);
-				if (Physics.Raycast(transform.position, coll.transform.position - transform.position, out hit, (coll.transform.position - transform.position).magnitude))
-				{
-					if (hit.collider.gameObject == coll.gameObject && !hit.collider.gameObject.GetComponent<MeshRenderer>().enabled)
-					{
-                        hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = true;
-                    }
-                }
-				else
-				{
-                    hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                }
-			}
         }
         private void SearchBush()
         {

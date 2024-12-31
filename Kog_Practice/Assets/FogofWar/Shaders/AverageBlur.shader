@@ -6,7 +6,12 @@
 		_LastTex("LastTexture", 2D) = "black" {}
 
 		_BlurRadius("BlurRadius",float) = 1.3
-		_LerpRate("LerpRate",float) = 0.05
+
+		/// <summary> LerpRate : 보간 비율
+		/// 두 Texture들의 선형 보간에 필요한 비율
+		/// <summary>
+
+		_LerpRate("LerpRate",float) = 0.5
 	}
 
 	CGINCLUDE
@@ -50,12 +55,13 @@
 		}
 		col = col / 16;
 		return col;
-	} 	
-
+	}
 	fixed4 lerpFrag (v2f i) : SV_Target
 	{
 		half4 col1=tex2D(_MainTex,i.uv);
 		half4 col2=tex2D(_LastTex,i.uv);
+
+		col2.a = 1;	// 얘가 아예 꺼멓게 만들어줌. 
 
 		return lerp(col2, col1, _LerpRate);
 	} 
