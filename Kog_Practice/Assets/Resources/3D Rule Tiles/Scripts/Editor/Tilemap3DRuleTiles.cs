@@ -9,10 +9,16 @@ using System.IO;
 
 public class Tilemap3DRuleTiles : EditorWindow
 {
-    string tileTag = "Rule Tile";
-    int combinedMeshVertexLimit = 65000;
+    private string[] paths = System.IO.Directory.GetFiles("Assets/Resources/Prefabs/ObjectTiles", "*.prefab");
+    private List<GameObject> prefabList = new List<GameObject>();
+    private List<string> options;
+    private int selectedIndex;
 
-    [MenuItem("MGL Tools/3D Tilemap Rule Tiles")]
+    private string tileTag = "Rule Tile";
+
+    private int combinedMeshVertexLimit = 65000;
+
+    [MenuItem("MGL Tools/3D Tilemap Rule Tiles")] 
     public static void ShowWindow()
     {
         GetWindow(typeof(Tilemap3DRuleTiles));
@@ -22,6 +28,7 @@ public class Tilemap3DRuleTiles : EditorWindow
     {
         tileTag = EditorGUILayout.TextField("Tile Base Name", tileTag);
         combinedMeshVertexLimit = EditorGUILayout.IntField("Combined Mesh Vertex Limit", combinedMeshVertexLimit);
+        selectedIndex = EditorGUILayout.Popup("GameObject Cell", selectedIndex, options.ToArray());
 
         if (GUILayout.Button("Generate Rule Tiles"))
         {
@@ -53,6 +60,10 @@ public class Tilemap3DRuleTiles : EditorWindow
         if (GUILayout.Button("Restore Deleted Rule Tiles"))
         {
             RestoreTilesFromBackup();
+        }
+        if (GUILayout.Button("Set Prefabs"))
+        {
+            SetPrefabs();
         }
     }
     private void AddNewLevel()
@@ -337,7 +348,16 @@ public class Tilemap3DRuleTiles : EditorWindow
         Debug.Log("Rule Tiles Restored!");
         GenerateRuleTiles();
     }
-
+    private void SetPrefabs()
+    {
+        prefabList.Clear();
+        options.Clear();
+        for (int i = 0; i < paths.Length; i++)
+        { 
+            prefabList.Add((GameObject)AssetDatabase.LoadAssetAtPath(paths[i], typeof(GameObject)));
+            options.Add(prefabList[i].name);
+        }
+    }
     public Vector3 GetVector3(string vector_string)
     {
         string[] temp = vector_string.Substring(1, vector_string.Length - 2).Split(',');

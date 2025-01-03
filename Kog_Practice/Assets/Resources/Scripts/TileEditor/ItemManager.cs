@@ -5,6 +5,7 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
 	PrefabFactory factory;
+
 	private void OnEnable()
 	{
 		EventManager.OnClicked += GeneratePrefab;
